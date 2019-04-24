@@ -10,7 +10,7 @@ import com.google.android.youtube.player.YouTubePlayer
 import com.google.android.youtube.player.YouTubePlayerView
 
 const val YOUTUBE_VIDEO_ID = "FOcXmDV_BX0&feature"
-const val YOUTUBE_API_KEY = "AIzaSyB7vK-BY1YKJvXE9FOyS8mwrFlHaqX_zO4" //TODO: Change To Your Youtube  API Key
+const val YOUTUBE_API_KEY = "Youtube  API Key" //TODO: Change To Your Youtube  API Key
 
 
 class MainActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener {
@@ -25,7 +25,9 @@ class MainActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener 
         youTubePlayer?.setPlaybackEventListener(playBackEventListener)
         youTubePlayer?.setPlayerStateChangeListener(stateChangedListener)
         if (!wasRestored) {
-            youTubePlayer?.cueVideo(YOUTUBE_VIDEO_ID)
+            youTubePlayer?.loadVideo(YOUTUBE_VIDEO_ID)
+        }else{
+            youTubePlayer?.play()
         }
     }
 
@@ -74,6 +76,7 @@ class MainActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener 
         }
 
     }
+
     private val stateChangedListener = object : YouTubePlayer.PlayerStateChangeListener{
         override fun onAdStarted() {
 
@@ -103,7 +106,6 @@ class MainActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener 
         }
 
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
