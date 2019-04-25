@@ -1,5 +1,6 @@
 package com.etatech.youtubeapi
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
@@ -15,12 +16,13 @@ const val YOUTUBE_API_KEY = "Youtube  API Key" //TODO: Change To Your Youtube  A
 
 class MainActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener {
 
+    val RESULT_CODE = 0
+    val player by lazy { findViewById<YouTubePlayerView>(R.id.youtube_player) }
 
     override fun onInitializationSuccess(
         provider: YouTubePlayer.Provider?,
         youTubePlayer: YouTubePlayer?,
-        wasRestored: Boolean
-    ) {
+        wasRestored: Boolean){
 
         youTubePlayer?.setPlaybackEventListener(playBackEventListener)
         youTubePlayer?.setPlayerStateChangeListener(stateChangedListener)
@@ -33,14 +35,12 @@ class MainActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener 
 
     override fun onInitializationFailure(provider: YouTubePlayer.Provider?, results: YouTubeInitializationResult?) {
 
-        val RESULT_CODE = 0
         if (results?.isUserRecoverableError == true) {
             results.getErrorDialog(this, RESULT_CODE).show()
         } else {
             val errorMessage = "Initializing Error -> $results"
             Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
         }
-
     }
 
     private val playBackEventListener = object : YouTubePlayer.PlaybackEventListener {
@@ -107,15 +107,15 @@ class MainActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener 
 
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        player.initialize(YOUTUBE_API_KEY, this)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val layout = findViewById<ConstraintLayout>(R.id.youtube_layout)
-
-        val player = findViewById<YouTubePlayerView>(R.id.youtube_player)
         player.initialize(YOUTUBE_API_KEY, this)
-
 
     }
 }
